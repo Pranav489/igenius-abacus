@@ -1,26 +1,525 @@
-@import "tailwindcss";
+/* app/globals.css */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================
+   FONT IMPORTS (via Next.js fonts.js)
+   The fonts are already loaded via fonts.js
+   These CSS variables are set in layout.js
+   ============================================ */
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-plus-jakarta), var(--font-inter), system-ui, -apple-system, sans-serif;
+  background: #FFF9F0; /* Warm Cream base background */
+  color: #4A4A6A; /* Muted Slate for body text */
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   TYPOGRAPHY STYLES
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-clash-display), var(--font-plus-jakarta), system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #1E1B2C; /* Deep Indigo */
+}
+
+h1 {
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+h4 {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.stat-number {
+  font-family: var(--font-space-grotesk), monospace;
+  font-weight: 700;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  line-height: 1;
+  color: #1E1B2C;
+}
+
+.stat-label {
+  font-family: var(--font-plus-jakarta), var(--font-inter), sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #4A4A6A;
+}
+
+/* ============================================
+   GLOBAL SECTION STYLES (Borderless, Cardless)
+   ============================================ */
+
+section {
+  position: relative;
+  padding: 5rem 2rem;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* No cards, no boxes, no borders - just content */
+.content-block {
+  position: relative;
+  /* No background, no border, no padding, no shadow */
+}
+
+/* Media elements - borderless */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  /* No borders, no shadows */
+}
+
+/* Video containers - no boxes */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  /* No background, no border, no padding */
+}
+
+/* ============================================
+   SVG DOODLES - BACKGROUND ART
+   ============================================ */
+
+/* Doodle container that sits behind content */
+.doodle-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Individual doodle SVG elements */
+.doodle {
+  position: absolute;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Floating animation for doodles */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(-3deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(20px) rotate(-5deg); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: -100; }
+}
+
+/* Doodle animations */
+.doodle-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.doodle-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.doodle-float-reverse {
+  animation: float-reverse 7s ease-in-out infinite;
+}
+
+.doodle-spin {
+  animation: spin-slow 20s linear infinite;
+}
+
+.doodle-pulse {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Animated dashed lines */
+.dashed-line {
+  stroke-dasharray: 10 10;
+  animation: dash 1s linear infinite;
+}
+
+/* ============================================
+   SPECIFIC DOODLE POSITIONING CLASSES
+   Use these in components
+   ============================================ */
+
+/* Abacus beads doodle */
+.doodle-abacus {
+  top: 10%;
+  right: 5%;
+  width: 180px;
+  height: auto;
+  opacity: 0.35;
+}
+
+/* Math symbols scatter */
+.doodle-math {
+  bottom: 15%;
+  left: 3%;
+  width: 120px;
+  height: auto;
+  opacity: 0.3;
+}
+
+/* Brain hemisphere doodle */
+.doodle-brain {
+  top: 30%;
+  left: -50px;
+  width: 150px;
+  height: auto;
+  opacity: 0.25;
+}
+
+/* Sparkle stars */
+.doodle-sparkle {
+  width: 40px;
+  height: auto;
+  opacity: 0.5;
+}
+
+.doodle-sparkle-1 { top: 20%; left: 15%; }
+.doodle-sparkle-2 { bottom: 25%; right: 20%; }
+.doodle-sparkle-3 { top: 60%; left: 85%; }
+
+/* Puzzle pieces */
+.doodle-puzzle {
+  width: 80px;
+  height: auto;
+  opacity: 0.3;
+}
+
+.doodle-puzzle-1 { top: 70%; left: 5%; }
+.doodle-puzzle-2 { bottom: 10%; right: 8%; }
+
+/* Arrows and paths */
+.doodle-arrow {
+  width: 100px;
+  height: auto;
+  opacity: 0.35;
+}
+
+.doodle-arrow-1 { top: 40%; right: 10%; }
+.doodle-arrow-2 { bottom: 30%; left: 8%; }
+
+/* Wavy lines */
+.doodle-wave {
+  width: 200px;
+  height: auto;
+  opacity: 0.2;
+}
+
+.doodle-wave-1 { bottom: 0; left: 0; }
+.doodle-wave-2 { top: 50%; right: -50px; }
+
+/* Geometric shapes */
+.doodle-geometry {
+  width: 60px;
+  height: auto;
+  opacity: 0.25;
+}
+
+/* Lightbulb idea doodle */
+.doodle-lightbulb {
+  width: 70px;
+  height: auto;
+  opacity: 0.3;
+}
+
+.doodle-lightbulb-1 { top: 15%; left: 10%; }
+.doodle-lightbulb-2 { bottom: 20%; right: 12%; }
+
+/* Cube net for Rubik's section */
+.doodle-cube {
+  width: 100px;
+  height: auto;
+  opacity: 0.25;
+}
+
+/* School bus doodle */
+.doodle-bus {
+  width: 130px;
+  height: auto;
+  opacity: 0.2;
+}
+
+/* Handshake doodle for franchise */
+.doodle-handshake {
+  width: 90px;
+  height: auto;
+  opacity: 0.3;
+}
+
+/* Currency/money symbol doodle */
+.doodle-money {
+  width: 60px;
+  height: auto;
+  opacity: 0.3;
+}
+
+/* Location pin doodle */
+.doodle-location {
+  width: 50px;
+  height: auto;
+  opacity: 0.35;
+}
+
+/* ============================================
+   HERO SECTION SPECIFIC DOODLES
+   ============================================ */
+
+.hero-doodle-beads {
+  position: absolute;
+  top: 15%;
+  right: 2%;
+  width: 300px;
+  height: auto;
+  opacity: 0.3;
+  animation: float 8s ease-in-out infinite;
+}
+
+.hero-doodle-sparkles {
+  position: absolute;
+  bottom: 20%;
+  left: 5%;
+  width: 150px;
+  height: auto;
+  opacity: 0.4;
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* ============================================
+   SCROLL TRIGGERED ANIMATIONS (via CSS)
+   Use with Intersection Observer or AOS library
+   ============================================ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+.fade-up-delay-1 {
+  animation: fadeUp 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.fade-up-delay-2 {
+  animation: fadeUp 0.8s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+.fade-up-delay-3 {
+  animation: fadeUp 0.8s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+/* ============================================
+   MEDIA & IMAGE STYLES
+   ============================================ */
+
+/* Circular images for team - no border/frame */
+.team-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* No border, no shadow */
+}
+
+/* Full width media strips */
+.media-strip {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  align-items: center;
+}
+
+.media-strip-image {
+  flex: 1;
+  min-width: 280px;
+}
+
+.media-strip-content {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* Video styling - no player chrome by default */
+video {
+  width: 100%;
+  height: auto;
+  outline: none;
+}
+
+/* ============================================
+   CTA & BUTTON STYLES (Minimal)
+   ============================================ */
+
+/* Minimal CTA - no box, just underlined text or pill */
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-weight: 600;
+  color: #FF8C42; /* Warm Orange */
+  text-decoration: none;
+  border-bottom: 2px solid #FF8C42;
+  padding-bottom: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.cta-link:hover {
+  gap: 0.75rem;
+  color: #E6782E;
+  border-bottom-color: #E6782E;
+}
+
+/* Minimal pill button - very subtle */
+.cta-pill {
+  display: inline-block;
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: #FF8C42;
+  padding: 0.75rem 2rem;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  /* No border, no shadow */
+}
+
+.cta-pill:hover {
+  background: #E6782E;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.mt-5 { margin-top: 3rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mb-5 { margin-bottom: 3rem; }
+
+.pt-1 { padding-top: 0.5rem; }
+.pt-2 { padding-top: 1rem; }
+.pt-3 { padding-top: 1.5rem; }
+.pt-4 { padding-top: 2rem; }
+.pt-5 { padding-top: 3rem; }
+
+.pb-1 { padding-bottom: 0.5rem; }
+.pb-2 { padding-bottom: 1rem; }
+.pb-3 { padding-bottom: 1.5rem; }
+.pb-4 { padding-bottom: 2rem; }
+.pb-5 { padding-bottom: 3rem; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  section {
+    padding: 3rem 1.5rem;
+  }
+  
+  .media-strip {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .team-photo {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* No scrollbar flash */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF9F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FF8C42;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E6782E;
 }
